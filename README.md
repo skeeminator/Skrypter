@@ -129,6 +129,9 @@ The author is not responsible for any illegal use or damages caused by this tool
 - **dnlib**  
   [dnlib on GitHub](https://github.com/0xd4d/dnlib)
 
+- **AMSI Bypass Techniques**  
+  [@EvilBytecode on GitHub](https://github.com/EvilBytecode)
+
 - **Developed by:** [@skeeminator](https://github.com/skeeminator)
 - **Powered by:** [SkeemLabs](https://github.com/SkeemLabs)
 
