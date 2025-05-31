@@ -31,6 +31,33 @@ Skrypter is a powerful file crypter and binder application that provides robust 
 
 ---
 
+## 🔍 Advanced Evasion Techniques
+
+Skrypter employs a comprehensive suite of evasion techniques to ensure maximum FUD capability:
+
+### 🧠 Code Obfuscation
+- **String Encryption:** All strings are encrypted using Base64 encoding with dynamic decryption
+- **Control Flow Obfuscation:** Logic paths are altered to confuse static analysis tools
+- **Rename Protection:** All method and class names are obfuscated to prevent signature detection
+- **Anti-De4dot Protection:** Special measures to prevent decompilation by common tools
+- **Proxy Strings:** Implementation of string proxying to avoid direct string references
+- **Junk Code Injection:** Dynamic insertion of meaningless code to confuse analyzers
+
+### 🛡️ Runtime Protection
+- **AMSI Bypass:** Targeted patching of Antimalware Scan Interface to prevent runtime scanning
+- **ETW Patching:** Disables Event Tracing for Windows to prevent behavioral monitoring
+- **API Obfuscation:** Custom implementation of Windows API calls to avoid direct hooks
+- **Function Name Obfuscation:** Dynamic obfuscation of critical function names
+
+### 🎭 Behavioral Evasion
+- **Environmental Awareness:** Code that mimics legitimate application behavior
+- **Fake Registry Access:** Simulated benign registry operations to mislead heuristic engines
+- **Random Execution Paths:** Non-deterministic execution flow to complicate dynamic analysis
+- **Sleep Timers:** Strategic delays to evade sandbox analysis
+- **Dummy Methods:** Inclusion of benign-looking methods that perform mathematical operations
+
+---
+
 ## 📚 Dependencies
 
 To build this project, you need the following dependencies:
