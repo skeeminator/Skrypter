@@ -3,11 +3,9 @@
 <img src="https://img.shields.io/github/v/release/skeeminator/Skrypter?style=for-the-badge&color=blue">
 <img src="https://img.shields.io/github/downloads/skeeminator/Skrypter/total?style=for-the-badge&color=purple">
 
-<div align="center">
-
-![Skrypter Banner](https://github.com/skeeminator/Skrypter/blob/main/assets/images/skrypter.png?raw=true)
-
-</div>
+<p align="center">
+  <img src="assets/optimized/skrypter.png" alt="Skrypter Banner" />
+</p>
 
 # 🛠️ Skrypter | .NET/Native Crypter/Binder (FUD 2025)
 
