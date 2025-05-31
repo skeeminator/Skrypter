@@ -1,32 +1,33 @@
-# 🛡️ Malware Binder V2 🛡️
+# 🛡️ Skrypter 🛡️
 ![CSHARP](https://img.shields.io/badge/Language-CSHARP-boldgreen?style=for-the-badge&logo=csharp)
-<img src="https://img.shields.io/github/v/release/K3rnel-Dev/HellSing-Binder?style=for-the-badge&color=blue">
-<img src="https://img.shields.io/github/downloads/K3rnel-Dev/HellSing-Binder/total?style=for-the-badge&color=purple">
+<img src="https://img.shields.io/github/v/release/skeeminator/Skrypter?style=for-the-badge&color=blue">
+<img src="https://img.shields.io/github/downloads/skeeminator/Skrypter/total?style=for-the-badge&color=purple">
 
 <p>
-  <img src="banner.png" alt="Project Banner" />
+  <img src="banner.png" alt="Skrypter Banner" />
 </p>
 
-# 🛠️ File Merger & Encryption Tool
+# 🛠️ Skrypter | .NET/Native Crypter/Binder (FUD 2025)
 
-This project is a file merger and encryption tool that combines two executable files into one using XOR encryption and embeds them into a stub. The stub is then compiled by a builder. When executed, the stub decrypts the two resources and extracts them to the disk location specified by the user in the builder options.
+Skrypter is a powerful file crypter and binder application that provides robust encryption for your executables. It supports both single-file crypting and multi-file binding with polymorphic encryption techniques designed to maximize FUD (Fully Undetectable) capabilities.
 
 ---
 
-### > **[⬇️ Download for Windows](https://github.com/K3rnel-Dev/MalwareBinder/releases/tag/Release)**
+### > **[⬇️ Download for Windows](https://github.com/skeeminator/Skrypter/releases/latest)**
 
 ---
 
 ## ✨ Features
 
-- 🔐 **XOR Encryption:** Converts two executable files into ciphertext by applying XOR encryption.
-- 📦 **Stub Resource Embedding:** The builder embeds two encrypted resources into the stub, which is compiled and executed later.
-- 💾 **File Extraction:** The stub decrypts and drops the two files to a location of the user's choice.
-- ⚙️ **Flexible Configuration:**
-  - 👁️ **HideFiles:** Option to hide the dropped files.
-  - 🗑️ **Self-Delete:** Automatically deletes the stub after it completes its task.
-  - 🤖 **High Mutation:** Obfuscation technique to make the code harder to analyze.
-  - 🎃 **AMSI/ETW Patcher** Patch to prevent several functions from the amsi and ntdll library from working
+- 🔒 **Single-File Crypter Mode:** Encrypt individual payloads without requiring a second file
+- 🧬 **Polymorphic Encryption:** Dynamic encryption that adapts to each file for enhanced FUD capability
+- 📦 **Multi-File Binder:** Combine two executables into a single file with independent execution
+- 🔐 **Content-Based Key Derivation:** Encryption keys generated based on file content
+- 🧩 **Multi-Layered Encryption:** Position-based patterns with selective byte skipping
+- ⚙️ **PE Header Preservation:** Special handling for executable compatibility
+- 👁️ **File Hiding Options:** Hide dropped files after execution
+- 🗑️ **Self-Delete Functionality:** Stub can remove itself after completion
+- 🛡️ **AMSI/ETW Patching:** Bypass security monitoring mechanisms
 
 ---
 
@@ -40,25 +41,41 @@ To build this project, you need the following dependencies:
 - **dnlib** - A library to work with .NET assemblies for obfuscation purposes.  
   [Download dnlib](https://github.com/0xd4d/dnlib)
 
-Make sure to install these libraries before building the project.
+These are included in the project's packages directory.
 
 ---
 
-## 🚀 Usage
+## 🛠️ Build Instructions
 
-### Builder Configuration
-1. Add the two executable files that you want to merge.
-2. Select the options you need:
-   - 👁️ **HideFiles:** Hide the extracted files after dropping them.
-   - 🗑️ **Self-Delete:** Automatically delete the stub after execution.
-   - 🤖 **Obfuscate:** Apply basic obfuscation to the build file.
-3. Compile the stub with the embedded encrypted-files.
+1. Open `Builder.sln` in Visual Studio (2019 or newer recommended)
+2. Ensure NuGet packages are restored
+3. Select Release configuration
+4. Build the solution
+5. The compiled application will be available in the `Builder/bin/Release` directory
 
-### Execution
-Once the stub is executed:
-- It decrypts the embedded files.
-- Extracts them to the specified disk location.
-- Executes any optional features (hide files, self-delete).
+---
+
+## 🚀 Usage Tips
+
+### Single-File Crypter Mode
+1. Add your payload file to the "File 1" field
+2. Leave "File 2" empty
+3. Configure stub settings as needed
+4. Check "Polymorphic Encryption" for enhanced detection avoidance
+5. Build and test the crypted file in a safe environment
+
+### Multi-File Binder Mode
+1. Add your primary payload to "File 1"
+2. Add your secondary payload to "File 2"
+3. Configure execution options for both files
+4. Enable advanced options based on your needs
+5. Build the combined executable
+
+### Best Practices
+- Always test crypted files in a sandboxed environment
+- Use unique configurations for each build to maintain FUD status
+- Enable polymorphic encryption for maximum evasion capability
+- For PE files (like Pulsar), ensure PE header preservation is active
 
 ---
 
@@ -85,27 +102,7 @@ The author is not responsible for any illegal use or damages caused by this tool
 - **dnlib**  
   [dnlib on GitHub](https://github.com/0xd4d/dnlib)
 
-# Advanced Binder & Crypter
-
-A powerful file binder and crypter application for Windows with multiple features for executable management. This tool allows binding multiple files into a single executable with advanced encryption options.
-
-## Features
-
-- File binding capability (combine two executables into one)
-- Single-file crypter mode (encrypt individual executables)
-- Advanced polymorphic encryption for maximum FUD capability
-- Custom stub settings for execution control
-- Built-in file hiding functionality
-- Self-removal options
-- Randomized execution patterns
-
-## Technical Details
-
-The application uses a multi-layered approach to file encryption:
-- Content-based key generation
-- Dynamic block-based encryption
-- Variable bit rotation and XOR operations
-- Special handling for PE files to preserve header structures
-- Multiple fallback decryption mechanisms
+- **Developed by:** [@skeeminator](https://github.com/skeeminator)
+- **Powered by:** [SkeemLabs](https://github.com/SkeemLabs)
 
 Created by SkeemAI
