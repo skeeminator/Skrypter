@@ -8,7 +8,7 @@
     <ProjectGuid>{7031A6BB-B8D9-4A95-99D7-4BCF575C65DF}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Crypter</RootNamespace>
-    <AssemblyName>Crypter</AssemblyName>
+    <AssemblyName>Skrypter</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>skrypter.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -47,6 +50,11 @@
       <DependentUpon>FrmCrypter.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Obfuscator.cs" />
     <Compile Include="Utils\Settings.cs" />
   </ItemGroup>
@@ -79,6 +87,15 @@
     <EmbeddedResource Include="Forms\FrmCrypter.resx">
       <DependentUpon>FrmCrypter.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\photo_2025-05-30_21-32-58.jpg" />
+    <None Include="Resources\photo_2025-05-31_23-40-54.jpg" />
+    <Content Include="skrypter.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Confuser.MSBuild.1.6.0\build\Confuser.MSBuild.targets" Condition="Exists('..\packages\Confuser.MSBuild.1.6.0\build\Confuser.MSBuild.targets')" />

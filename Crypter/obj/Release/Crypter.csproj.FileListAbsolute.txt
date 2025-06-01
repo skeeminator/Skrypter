@@ -16,7 +16,6 @@ C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Release\Cry
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Release\Crypter.pdb
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Release\Newtonsoft.Json.xml
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Release\Crypter.csproj.AssemblyReference.cache
-C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Release\Crypter.exe.config
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Release\Crypter.Forms.FrmCrypter.resources
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Release\Crypter.csproj.GenerateResource.cache
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Release\Crypter.csproj.CoreCompileInputs.cache

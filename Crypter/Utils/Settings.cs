@@ -31,5 +31,6 @@ namespace Crypter
         public bool runas { get; set; }
         public bool usePolymorphicAes { get; set; }
         public bool useArmdot { get; set; }
+        public bool processMasquerading { get; set; }
     }
 }

