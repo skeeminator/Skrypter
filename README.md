@@ -1,76 +1,109 @@
-
-# 🛡️ 0x0 Crypter - Free open sourced Crypter.
-
----
-
-## 🚀 Overview
-
-**0x0 Crypter** is a open sourced crypter fully coded by **@MpCmdRun**
+# Skrypter - Advanced Payload Crypter
 
 ---
 
-## 🎯 Features
+## Overview
 
-- **🔒 Base64 Protection** - Provides a basic protection to your exe on runtime.
-- **🛡️ AMSI Bypass** - Provides a temporary Bypass to the AmsiScanBuffer on Windows 10 and 11.
-- **🛡️ ETW Bypass** - Provides a temporary ETW Bypass on Windows 10 and 11.
-- **💻 Run as admin** - Provides the applicaiton to be ran as administrator (RunAs UAC Bypass).
-- **👤 Startup** - Creates a scheduled Task to run this .exe everytime to computer turns back on.
+**Skrypter** is a sophisticated payload protection solution developed by **SkeemLabs**. This tool encrypts and obfuscates executables to evade security measures while preserving full functionality and maintaining operational integrity.
 
 ---
 
-## 🚨 Legal Disclaimer
+## Key Features
 
-This tool is provided for **educational purposes only**.  
-You are responsible for **how you use this tool**.  
-Unauthorized access to computer systems is illegal.
-
-**Intended Use Cases**:
-- Red Team persistence frameworks
-- Malware analysis / simulation environments
-- Digital forensics research
-- Self-repair recovery scripting
-
-**Do not deploy** on devices or systems you do not own or have explicit permission to test.
+- **Enhanced Encryption** - Position-dependent XOR encryption preserving PE headers while thoroughly securing payload body
+- **Advanced AMSI Bypass** - Implements string obfuscation, reflection-based loading, and variable-key XOR-encoded shellcode
+- **ETW Bypass** - Provides reliable Event Tracing for Windows bypass on modern Windows systems
+- **Polymorphic Generation** - Generates unique crypted payloads with randomized namespaces and class names
+- **Process Handling** - Optimized process management for complete Pulsar compatibility
+- **UAC Bypass** - Administrative privilege elevation capabilities
+- **Persistence** - Scheduled task creation for reliable system execution
+- **Anti-Analysis Measures** - Configurable execution delays to prevent dynamic analysis
+- **Professional Obfuscation** - Optional Armdot integration for enterprise-grade protection
 
 ---
 
-## 🛠️ Setup
+## Security Techniques
 
-1. Clone the repo:
+- **Control Flow Obfuscation** - Multiple patterns including branching, exception-based, and switch-based flow
+- **Dead Code Injection** - Strategic insertion of non-functional code to confuse static analysis
+- **Assembly Attribute Manipulation** - Modifies assembly attributes to appear legitimate
+- **Compiler Pattern Mimicry** - Simulates compiler-generated code patterns for enhanced stealth
+- **Execution Timing Variations** - Randomized delays to prevent runtime detection
+- **Anti-Debug Implementation** - Advanced detection and countermeasures for debugging attempts
+- **String Protection** - Obfuscates embedded strings to prevent signature detection
+
+---
+
+## Current Capabilities
+
+- **AMSI Bypass** - Memory-based bypass technique
+- **ETW Bypass** - Event Tracing for Windows evasion
+- **Encryption** - Position-dependent XOR encryption
+- **Control Flow Obfuscation** - Advanced flow manipulation
+- **Assembly Attribute Spoofing** - Legitimate assembly appearance
+- **Code Obfuscation** - Strategic code insertion and manipulation
+- **Variable Protection** - Comprehensive variable name obfuscation
+
+**In Development:**
+- **~~Direct Syscalls~~**
+- **~~Alternative Injection Methods~~**
+- **~~Memory Only Execution~~**
+- **~~Process Hollowing Techniques~~**
+- **~~Anti-VM Enhancements~~**
+
+---
+
+## Setup
+
+1. Clone the repository:
     ```bash
-    git clone https://github.com/MpCmdRun/0x0-Crypter
-    cd 0x0-crypter
+    git clone https://github.com/SkeemLabs/Skrypter
+    cd Skrypter
     ```
 
 2. Open the solution in **Visual Studio 2019/2022**.
 
-3. Build **Release** mode.
+3. Build in **Release** mode.
 
-4. Run with **Administrator** privileges. (Could use a UAC Bypass!)
-
----
-
-## 🧩 TODO
-
-- [ ] Fix Anti-VM Error
-- [ ] Add Indirect Syscalls
-- [ ] Add Process Injection
-- [ ] Add In Memory Execution
+4. Execute with **Administrator** privileges.
 
 ---
 
-## 👑 Credits
+## Compatibility
 
-- Concept by @MpCmdRun
-- Coded by @MpCmdRun
-
----
-
-## 💬 Questions / Suggestions?
-
-Feel free to open an [Issue](https://github.com/MpCmdRun/0x0-Crypter/issues) or [Pull Request](https://github.com/MpCmdRun/0x0-Crypter/pulls).
+- Full **Pulsar** payload compatibility
+- Windows 10/11 support
+- .NET Framework 4.7.2+
 
 ---
 
-# 💀 0x0-Crypter - Best free Crypter
+## Development
+
+- Developed by **SkeemLabs**
+- Based on advanced crypting methodologies
+
+---
+
+## Legal Disclaimer
+
+This tool is provided for **educational and authorized testing purposes only**.  
+Users are responsible for ensuring proper authorization for all usage.  
+Unauthorized computer system access is illegal.
+
+**Legitimate Use Cases**:
+- Authorized Red Team operations
+- Professional penetration testing
+- Security research and development
+- Malware protection research
+
+**Usage Restriction**: Do not deploy on systems without explicit authorization.
+
+---
+
+## Support
+
+For professional inquiries and custom implementation services, contact SkeemLabs directly.
+
+---
+
+# Skrypter - Enterprise-Grade Payload Protection
