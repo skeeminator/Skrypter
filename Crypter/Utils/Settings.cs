@@ -32,5 +32,7 @@ namespace Crypter
         public bool usePolymorphicAes { get; set; }
         public bool useArmdot { get; set; }
         public bool processMasquerading { get; set; }
+        public bool useEvilbyteIndirectSyscalls { get; set; }
+        public bool winREPersistence { get; set; }
     }
 }

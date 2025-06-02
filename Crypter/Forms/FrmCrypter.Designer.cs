@@ -35,6 +35,8 @@
             this.processMasquerading = new System.Windows.Forms.CheckBox();
             this.armdotObfuscation = new System.Windows.Forms.CheckBox();
             this.polymorphicAes = new System.Windows.Forms.CheckBox();
+            this.evilbyteIndirectSyscalls = new System.Windows.Forms.CheckBox();
+            this.winREPersistence = new System.Windows.Forms.CheckBox();
             this.startup = new System.Windows.Forms.CheckBox();
             this.runas = new System.Windows.Forms.CheckBox();
             this.obfuscator = new System.Windows.Forms.CheckBox();
@@ -58,6 +60,7 @@
             // inputfile
             // 
             this.inputfile.BackColor = System.Drawing.Color.Black;
+            this.inputfile.ForeColor = System.Drawing.Color.Lime;
             this.inputfile.Location = new System.Drawing.Point(64, 156);
             this.inputfile.Margin = new System.Windows.Forms.Padding(6);
             this.inputfile.Name = "inputfile";
@@ -67,6 +70,7 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Black;
+            this.button1.ForeColor = System.Drawing.Color.Lime;
             this.button1.Location = new System.Drawing.Point(602, 156);
             this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
@@ -81,6 +85,8 @@
             this.groupBox1.Controls.Add(this.processMasquerading);
             this.groupBox1.Controls.Add(this.armdotObfuscation);
             this.groupBox1.Controls.Add(this.polymorphicAes);
+            this.groupBox1.Controls.Add(this.evilbyteIndirectSyscalls);
+            this.groupBox1.Controls.Add(this.winREPersistence);
             this.groupBox1.Controls.Add(this.startup);
             this.groupBox1.Controls.Add(this.runas);
             this.groupBox1.Controls.Add(this.obfuscator);
@@ -92,7 +98,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox1.Size = new System.Drawing.Size(668, 192);
+            this.groupBox1.Size = new System.Drawing.Size(721, 241);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Options";
@@ -101,12 +107,12 @@
             // 
             this.processMasquerading.AutoSize = true;
             this.processMasquerading.ForeColor = System.Drawing.Color.Lime;
-            this.processMasquerading.Location = new System.Drawing.Point(402, 123);
+            this.processMasquerading.Location = new System.Drawing.Point(248, 116);
             this.processMasquerading.Margin = new System.Windows.Forms.Padding(6);
             this.processMasquerading.Name = "processMasquerading";
-            this.processMasquerading.Size = new System.Drawing.Size(265, 29);
-            this.processMasquerading.TabIndex = 8;
-            this.processMasquerading.Text = "Process Masquerading";
+            this.processMasquerading.Size = new System.Drawing.Size(221, 29);
+            this.processMasquerading.TabIndex = 0;
+            this.processMasquerading.Text = "Process Hollowing";
             this.processMasquerading.UseVisualStyleBackColor = true;
             // 
             // armdotObfuscation
@@ -114,7 +120,7 @@
             this.armdotObfuscation.AutoSize = true;
             this.armdotObfuscation.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.armdotObfuscation.ForeColor = System.Drawing.Color.Lime;
-            this.armdotObfuscation.Location = new System.Drawing.Point(453, 81);
+            this.armdotObfuscation.Location = new System.Drawing.Point(24, 200);
             this.armdotObfuscation.Margin = new System.Windows.Forms.Padding(6);
             this.armdotObfuscation.Name = "armdotObfuscation";
             this.armdotObfuscation.Size = new System.Drawing.Size(215, 29);
@@ -126,7 +132,7 @@
             // 
             this.polymorphicAes.AutoSize = true;
             this.polymorphicAes.ForeColor = System.Drawing.Color.Lime;
-            this.polymorphicAes.Location = new System.Drawing.Point(24, 163);
+            this.polymorphicAes.Location = new System.Drawing.Point(24, 159);
             this.polymorphicAes.Margin = new System.Windows.Forms.Padding(6);
             this.polymorphicAes.Name = "polymorphicAes";
             this.polymorphicAes.Size = new System.Drawing.Size(287, 29);
@@ -134,11 +140,35 @@
             this.polymorphicAes.Text = "Polymorphism (AES only)";
             this.polymorphicAes.UseVisualStyleBackColor = true;
             // 
+            // evilbyteIndirectSyscalls
+            // 
+            this.evilbyteIndirectSyscalls.AutoSize = true;
+            this.evilbyteIndirectSyscalls.ForeColor = System.Drawing.Color.Lime;
+            this.evilbyteIndirectSyscalls.Location = new System.Drawing.Point(251, 200);
+            this.evilbyteIndirectSyscalls.Margin = new System.Windows.Forms.Padding(6);
+            this.evilbyteIndirectSyscalls.Name = "evilbyteIndirectSyscalls";
+            this.evilbyteIndirectSyscalls.Size = new System.Drawing.Size(282, 29);
+            this.evilbyteIndirectSyscalls.TabIndex = 0;
+            this.evilbyteIndirectSyscalls.Text = "Evilbyte Indirect Syscalls";
+            this.evilbyteIndirectSyscalls.UseVisualStyleBackColor = true;
+            // 
+            // winREPersistence
+            // 
+            this.winREPersistence.AutoSize = true;
+            this.winREPersistence.ForeColor = System.Drawing.Color.Lime;
+            this.winREPersistence.Location = new System.Drawing.Point(304, 159);
+            this.winREPersistence.Margin = new System.Windows.Forms.Padding(6);
+            this.winREPersistence.Name = "winREPersistence";
+            this.winREPersistence.Size = new System.Drawing.Size(229, 29);
+            this.winREPersistence.TabIndex = 8;
+            this.winREPersistence.Text = "WinRE Persistence";
+            this.winREPersistence.UseVisualStyleBackColor = true;
+            // 
             // startup
             // 
             this.startup.AutoSize = true;
             this.startup.ForeColor = System.Drawing.Color.Lime;
-            this.startup.Location = new System.Drawing.Point(514, 42);
+            this.startup.Location = new System.Drawing.Point(492, 83);
             this.startup.Margin = new System.Windows.Forms.Padding(6);
             this.startup.Name = "startup";
             this.startup.Size = new System.Drawing.Size(113, 29);
@@ -150,7 +180,7 @@
             // 
             this.runas.AutoSize = true;
             this.runas.ForeColor = System.Drawing.Color.Lime;
-            this.runas.Location = new System.Drawing.Point(214, 122);
+            this.runas.Location = new System.Drawing.Point(492, 42);
             this.runas.Margin = new System.Windows.Forms.Padding(6);
             this.runas.Name = "runas";
             this.runas.Size = new System.Drawing.Size(176, 29);
@@ -162,7 +192,7 @@
             // 
             this.obfuscator.AutoSize = true;
             this.obfuscator.ForeColor = System.Drawing.Color.Lime;
-            this.obfuscator.Location = new System.Drawing.Point(248, 81);
+            this.obfuscator.Location = new System.Drawing.Point(24, 122);
             this.obfuscator.Margin = new System.Windows.Forms.Padding(6);
             this.obfuscator.Name = "obfuscator";
             this.obfuscator.Size = new System.Drawing.Size(159, 29);
@@ -186,7 +216,7 @@
             // 
             this.amsiBypass.AutoSize = true;
             this.amsiBypass.ForeColor = System.Drawing.Color.Lime;
-            this.amsiBypass.Location = new System.Drawing.Point(24, 123);
+            this.amsiBypass.Location = new System.Drawing.Point(248, 81);
             this.amsiBypass.Margin = new System.Windows.Forms.Padding(6);
             this.amsiBypass.Name = "amsiBypass";
             this.amsiBypass.Size = new System.Drawing.Size(172, 29);
@@ -224,11 +254,11 @@
             this.groupBox2.Controls.Add(this.xor);
             this.groupBox2.Controls.Add(this.aes);
             this.groupBox2.Controls.Add(this.aes256);
-            this.groupBox2.Location = new System.Drawing.Point(64, 400);
+            this.groupBox2.Location = new System.Drawing.Point(64, 449);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBox2.Size = new System.Drawing.Size(668, 113);
+            this.groupBox2.Size = new System.Drawing.Size(721, 113);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Protection";
@@ -237,7 +267,7 @@
             // 
             this.xor.AutoSize = true;
             this.xor.ForeColor = System.Drawing.Color.Lime;
-            this.xor.Location = new System.Drawing.Point(514, 46);
+            this.xor.Location = new System.Drawing.Point(580, 46);
             this.xor.Margin = new System.Windows.Forms.Padding(6);
             this.xor.Name = "xor";
             this.xor.Size = new System.Drawing.Size(88, 29);
@@ -249,7 +279,7 @@
             // 
             this.aes.AutoSize = true;
             this.aes.ForeColor = System.Drawing.Color.Lime;
-            this.aes.Location = new System.Drawing.Point(276, 46);
+            this.aes.Location = new System.Drawing.Point(326, 46);
             this.aes.Margin = new System.Windows.Forms.Padding(6);
             this.aes.Name = "aes";
             this.aes.Size = new System.Drawing.Size(85, 29);
@@ -262,7 +292,7 @@
             this.aes256.AutoSize = true;
             this.aes256.Checked = true;
             this.aes256.ForeColor = System.Drawing.Color.Lime;
-            this.aes256.Location = new System.Drawing.Point(32, 46);
+            this.aes256.Location = new System.Drawing.Point(59, 46);
             this.aes256.Margin = new System.Windows.Forms.Padding(6);
             this.aes256.Name = "aes256";
             this.aes256.Size = new System.Drawing.Size(116, 29);
@@ -275,10 +305,10 @@
             // 
             this.button2.BackColor = System.Drawing.Color.Black;
             this.button2.ForeColor = System.Drawing.Color.Lime;
-            this.button2.Location = new System.Drawing.Point(64, 525);
+            this.button2.Location = new System.Drawing.Point(64, 574);
             this.button2.Margin = new System.Windows.Forms.Padding(6);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(668, 71);
+            this.button2.Size = new System.Drawing.Size(721, 71);
             this.button2.TabIndex = 5;
             this.button2.Text = "Build";
             this.button2.UseVisualStyleBackColor = false;
@@ -309,7 +339,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.ClientSize = new System.Drawing.Size(797, 611);
+            this.ClientSize = new System.Drawing.Size(899, 663);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button2);
@@ -355,5 +385,7 @@
         private System.Windows.Forms.CheckBox processMasquerading;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.CheckBox evilbyteIndirectSyscalls;
+        private System.Windows.Forms.CheckBox winREPersistence;
     }
 }

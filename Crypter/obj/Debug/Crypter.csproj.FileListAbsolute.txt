@@ -10,16 +10,17 @@ C:\Users\miles\source\repos\Crypter\Crypter\bin\Debug\Newtonsoft.Json.xml
 C:\Users\miles\source\repos\Crypter\Crypter\obj\Debug\Crypter.csproj.Up2Date
 C:\Users\miles\source\repos\Crypter\Crypter\obj\Debug\Crypter.exe
 C:\Users\miles\source\repos\Crypter\Crypter\obj\Debug\Crypter.pdb
-C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Newtonsoft.Json.xml
+C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Skrypter.exe
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.AssemblyReference.cache
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.Forms.FrmCrypter.resources
+C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.Properties.Resources.resources
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.GenerateResource.cache
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.CoreCompileInputs.cache
-C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.Up2Date
+C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Skrypter.exe.config
+C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Skrypter.pdb
+C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Newtonsoft.Json.xml
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.Fody.CopyLocal.cache
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.Fody.RuntimeCopyLocal.cache
-C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Skrypter.exe.config
-C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Skrypter.exe
-C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\bin\Debug\Skrypter.pdb
+C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.Up2Date
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Skrypter.exe
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Skrypter.pdb
