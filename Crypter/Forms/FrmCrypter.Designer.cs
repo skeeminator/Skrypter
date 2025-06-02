@@ -37,6 +37,7 @@
             this.polymorphicAes = new System.Windows.Forms.CheckBox();
             this.evilbyteIndirectSyscalls = new System.Windows.Forms.CheckBox();
             this.winREPersistence = new System.Windows.Forms.CheckBox();
+            this.memoryInjection = new System.Windows.Forms.CheckBox();
             this.startup = new System.Windows.Forms.CheckBox();
             this.runas = new System.Windows.Forms.CheckBox();
             this.obfuscator = new System.Windows.Forms.CheckBox();
@@ -87,6 +88,7 @@
             this.groupBox1.Controls.Add(this.polymorphicAes);
             this.groupBox1.Controls.Add(this.evilbyteIndirectSyscalls);
             this.groupBox1.Controls.Add(this.winREPersistence);
+            this.groupBox1.Controls.Add(this.memoryInjection);
             this.groupBox1.Controls.Add(this.startup);
             this.groupBox1.Controls.Add(this.runas);
             this.groupBox1.Controls.Add(this.obfuscator);
@@ -163,6 +165,18 @@
             this.winREPersistence.TabIndex = 8;
             this.winREPersistence.Text = "WinRE Persistence";
             this.winREPersistence.UseVisualStyleBackColor = true;
+            // 
+            // memoryInjection
+            // 
+            this.memoryInjection.AutoSize = true;
+            this.memoryInjection.ForeColor = System.Drawing.Color.Lime;
+            this.memoryInjection.Location = new System.Drawing.Point(492, 116);
+            this.memoryInjection.Margin = new System.Windows.Forms.Padding(6);
+            this.memoryInjection.Name = "memoryInjection";
+            this.memoryInjection.Size = new System.Drawing.Size(211, 29);
+            this.memoryInjection.TabIndex = 12;
+            this.memoryInjection.Text = "Memory Injection";
+            this.memoryInjection.UseVisualStyleBackColor = true;
             // 
             // startup
             // 
@@ -387,5 +401,6 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.CheckBox evilbyteIndirectSyscalls;
         private System.Windows.Forms.CheckBox winREPersistence;
+        private System.Windows.Forms.CheckBox memoryInjection;
     }
 }

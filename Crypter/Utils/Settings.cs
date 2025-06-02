@@ -34,5 +34,6 @@ namespace Crypter
         public bool processMasquerading { get; set; }
         public bool useEvilbyteIndirectSyscalls { get; set; }
         public bool winREPersistence { get; set; }
+        public bool useMemoryInjection { get; set; }
     }
 }

