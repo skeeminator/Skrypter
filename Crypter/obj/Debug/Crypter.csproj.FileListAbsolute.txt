@@ -24,3 +24,18 @@ C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypt
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Crypter.csproj.Up2Date
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Skrypter.exe
 C:\Users\porkchop\Documents\Source Code\0x0-Crypter-main\Crypter\obj\Debug\Skrypter.pdb
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\bin\Debug\Skrypter.exe.config
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\bin\Debug\Skrypter.exe
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\bin\Debug\Skrypter.pdb
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\bin\Debug\Newtonsoft.Json.xml
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.csproj.AssemblyReference.cache
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Skrypter.exe.config
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.Forms.FrmCrypter.resources
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.Properties.Resources.resources
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.csproj.GenerateResource.cache
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.csproj.CoreCompileInputs.cache
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.csproj.Fody.CopyLocal.cache
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.csproj.Fody.RuntimeCopyLocal.cache
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Crypter.csproj.Up2Date
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Skrypter.exe
+C:\Users\porkchop\Documents\GitHub\Skrypter\Crypter\obj\Debug\Skrypter.pdb

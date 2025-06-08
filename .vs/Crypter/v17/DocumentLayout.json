@@ -1,12 +1,36 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\porkchop\\Documents\\GitHub\\Skrypter\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7031A6BB-B8D9-4A95-99D7-4BCF575C65DF}|Crypter\\Crypter.csproj|c:\\users\\porkchop\\documents\\github\\skrypter\\crypter\\forms\\frmcrypter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{7031A6BB-B8D9-4A95-99D7-4BCF575C65DF}|Crypter\\Crypter.csproj|solutionrelative:crypter\\forms\\frmcrypter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FrmCrypter.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\porkchop\\Documents\\GitHub\\Skrypter\\Crypter\\Forms\\FrmCrypter.cs",
+              "RelativeDocumentMoniker": "Crypter\\Forms\\FrmCrypter.cs",
+              "ToolTip": "C:\\Users\\porkchop\\Documents\\GitHub\\Skrypter\\Crypter\\Forms\\FrmCrypter.cs [Design]",
+              "RelativeToolTip": "Crypter\\Forms\\FrmCrypter.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T03:52:58.359Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

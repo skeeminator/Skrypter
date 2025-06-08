@@ -79,5 +79,25 @@ namespace Crypter.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap skeemlabs_banner_removebg_preview {
+            get {
+                object obj = ResourceManager.GetObject("skeemlabs-banner-removebg-preview", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap skeemlabs_banner_removebg_preview_1_ {
+            get {
+                object obj = ResourceManager.GetObject("skeemlabs-banner-removebg-preview(1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

