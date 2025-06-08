@@ -4,7 +4,7 @@
 
 ## Overview
 
-**Skrypter** is a sophisticated payload protection solution developed by **SkeemLabs**. This tool encrypts and obfuscates executables to evade security measures while preserving full functionality and maintaining operational integrity.
+**Skrypter** is the biggest mess Ive made lol.
 
 ---
 
